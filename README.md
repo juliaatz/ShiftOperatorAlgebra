@@ -19,7 +19,7 @@ Each subdirectory contains the following (language specific) files
     the shift operator class can be used.
 
 The MATLAB code has been developed in MATLAB 2020b. For the Julia code
-a Pkg envirnoment is available through the `Project.toml` and
+a Pkg environment is available through the `Project.toml` and
 `Manifest.toml` files. These can be activated Pkg mode in the Julia REPL
 (press "]" after writing julia in the terminal) with the following commands:
 
