@@ -5,7 +5,7 @@ Installed the code by clonning the git repository by running
     gitclone https://github.com/juliaatz/ShiftOperatorAlgebra.git
 in the directory you want the code to be stored.
 
-To Download Julia check the instructions (here)[https://julialang.org/downloads/].
+To Download Julia check the instructions [here](https://julialang.org/downloads/).
 
 ## Using the code
 To run the code, open a terminal and navigate to the cloned repository and then the JuliaCode
