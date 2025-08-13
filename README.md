@@ -21,7 +21,14 @@ Each subdirectory contains the following (language specific) files
 The MATLAB code has been developed in MATLAB 2020b. For the Julia code
 a Pkg environment is available through the `Project.toml` and
 `Manifest.toml` files. These can be activated Pkg mode in the Julia REPL
-(press "]" after writing julia in the terminal) with the following commands:
+(press "]" after writing julia in the terminal) with
 
         activate JuliaCode
         instantiate
+        
+from the top directory or
+
+        activate .
+        instantiate
+
+from the Julia subdirectory.
