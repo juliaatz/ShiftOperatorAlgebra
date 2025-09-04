@@ -1,4 +1,4 @@
-# shift-operator-algebra
+# Shift operator algebra
 This is the code associated with the PAPER.
 It implements an algebra for shift operators that is used to derive
 factorised version of the Linear Quadratic Regulator (LQR).
