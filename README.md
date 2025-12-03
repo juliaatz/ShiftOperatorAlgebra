@@ -7,7 +7,7 @@ The code is available in two languages; MATLAB and Julia.
 Each subdirectory contains the following (language specific) files
 - **Examples** containes the code for the examples in the paper.
 - **Factor_lqr** is a function that derives a factorised LQR algorithimically.
-- **Factor_lqr_formula** is a function that derives a factorised LQR
+- **Factor_lqr_formula** is a function that computes a factorised LQR
     by the formula in Lemma X from the paper.
 - **M2ss** is a function that derives a state space formulation from a
     matrix of shift operators (when certain conditions are fullfilled).
@@ -17,6 +17,8 @@ Each subdirectory contains the following (language specific) files
 - **ShiftOperator** is the class that defines the shift operator object
 - **ShiftOperatorTutorial** is a texted base tutorial that explaines how
     the shift operator class can be used.
+- **TimeVaryingNecessary** shows that a time varying factorisation is needed
+    in accordance with lemma X.
 
 For installation and more language specific instructions, check the READMEs in the
 corresponding subdirectories.
