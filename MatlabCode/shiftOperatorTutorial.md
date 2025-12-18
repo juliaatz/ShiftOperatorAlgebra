@@ -1,6 +1,7 @@
 # About this tutorial
 
-This is a tutorial for how to use the class shiftOperator in Matlab.
+This is a tutorial for how to use the class shiftOperator as well as the
+class signalL2 in Matlab.
 This is not meant as an exhaustive explanation of the class but just to get
 you started. For more details on the shiftOperator class, see the documentation.
 To see how the class can be used to derive a factorised linear quadratic
@@ -104,3 +105,17 @@ the specific structure required from the PAPER.
         z -one q'*r;
         z z -one]
     L = chol(M)         % L*L' = M'*M
+
+## Applying operators
+
+To apply the operator you need a signal of the class signalL2, also provided
+in this repository. The signal class represents signals that can be represented
+by a tripple $(C,A,x_0)$ where the signal is
+        $y = (C x_0, C A x_0, C A^2 x_0, C A^3 x_0, ...)$.
+
+The following example shows how an operator can be applied to signal;
+
+    q = shiftOperator('q');
+    op = q^2 + q';
+    y = signalL2([1 0], [2 1; 0 1], [0;1]);
+    yOut = applyOperator(op, y);  % Alterative syntax: op*y

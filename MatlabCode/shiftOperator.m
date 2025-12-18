@@ -213,6 +213,8 @@ classdef shiftOperator
             %TIMES(A,B) gives the same result as A.*B where A and B are
             %shift operators of the same size.
             
+            
+            
             %Ensure correct dimenssions
             [n, m] = size(A);
             [nb, mb] = size(B);
@@ -232,9 +234,15 @@ classdef shiftOperator
         end
         
         function matrixProduct = mtimes(A,B)
-            %MTIMES Matrix multiplication of matrices of shift operators.
+            %MTIMES Matrix multiplication of matrices of shift operators or applies matrix of operators to vector of signals.
             %MTIMES(A,B) gives the same result as A*B where A and B are
-            %matrices of shift operators of approriate size.
+            %matrices of shift operators of approriate size. If B is a
+            %vector of signals it is equivalent to applyOperator(A,B)
+            
+            if class(B) == "signalL2"
+                matrixProduct = applyOperator(A,B);
+                return
+            end
             [n, checkA] = size(A);
             [checkB, m] = size(B);
             if(checkA ~= checkB)
@@ -698,6 +706,26 @@ classdef shiftOperator
                 end
             end
         end
+        
+        function yNew = applyOperator(M, yVec)
+            %APPLYOPERATOR Applies a matrix of operators to a vector of signals
+            [n,m] = size(M);
+            nVec = length(yVec);
+            if nVec ~= m
+                error("Number of columns in M must be the same as the number of rows in yVec")
+            end
+            yNew = [];
+            for i = 1:n
+                for j = 1:m
+                    if j == 1
+                        yi = applyOperatorE(M(i,j), yVec(j));
+                    else
+                        yi = yi + applyOperatorE(M(i,j), yVec(j));
+                    end
+                end
+                yNew = [yNew; yi];
+            end
+        end 
          
     end
     
@@ -711,7 +739,7 @@ classdef shiftOperator
                 operator2 = shiftOperator(operator2);
             end
             shifts1 = operator1.shiftCoefficients;
-            shifts2 = operator2.shiftCoefficients;;
+            shifts2 = operator2.shiftCoefficients;
             
             n1 = length(shifts1);
             n2 = length(shifts2);
@@ -829,6 +857,31 @@ classdef shiftOperator
             for i = 1:n
                 for j= 1:m
                     product(i,j) = M(i,j)*op;
+                end
+            end
+        end
+        
+        function newY = applyOperatorE(op, y)
+            %APPLYOPERATORE Applies an operator to a signal
+            if op == shiftOperator(0)
+                newY = signalL2(0,0,0);
+                return
+            end
+            coeffs = getCoefficients(op);
+            [n,m] = size(coeffs);
+            noTermAdded = true;
+            for i = 1:n
+                for j = 1:m
+                    cij = coeffs(i,j);
+                    if (cij ~= 0)
+                        yij = applyMonomialOperator(cij, i, j, y);
+                        if noTermAdded
+                            newY = yij;
+                            noTermAdded = false;
+                        else
+                            newY = newY + yij;
+                        end
+                    end
                 end
             end
         end

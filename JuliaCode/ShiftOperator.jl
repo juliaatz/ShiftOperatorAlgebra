@@ -1,3 +1,4 @@
+include("SignalL2.jl")
 struct ShiftOperator
     shiftMatrix     # matrix M for a operate op such that op = [1 q q^2...]M[1 q' (q')^2 ...]'.
 
@@ -421,6 +422,18 @@ function Base.:*(op :: ShiftOperator, opMatrix :: Matrix{ShiftOperator})
     return product
 end
 
+function Base.:*(op :: ShiftOperator, y :: SignalL2)
+    # Applies the operator op to a signal y
+    yOut = applyOperator(op,y)
+    return yOut
+end
+
+function Base.:*(opMatrix :: Matrix{ShiftOperator}, yVec :: Vector{SignalL2})
+    # Applies a matrix of operators to a vector of signals
+    yOutVec = applyOperator(opMatrix, yVec)
+    return yOutVec
+end
+
 function Base.:^(op :: ShiftOperator, exponent :: Int)
     # Raises a matrix of shift operators to a power.
     resultOperator = ShiftOperator(1)
@@ -772,4 +785,48 @@ function onlyZeros(V = Vector{ShiftOperator})
     Vm = reshape(V, n, 1)
     O = shiftopZeros(ShiftOperator, n, 1)
     return O == Vm
+end
+
+function applyOperator(op::ShiftOperator, y::SignalL2)
+    # Applies an operator to a signal
+    if op == ShiftOperator(0)
+        newY = SignalL2(reshape([0],(1,1)),reshape([0],(1,1)),[0])
+        return newY
+    end
+    coeffs = getCoefficients(op)
+    n,m = size(coeffs)
+    noTermAdded = true
+    for i = 1:n
+        for j = 1:m
+            cij = coeffs[i,j]
+            if (cij != 0)
+                yij = applyMonomialOperator(cij, i, j, y)
+                if noTermAdded
+                    newY = yij
+                    noTermAdded = false
+                else
+                    newY = newY + yij;
+                end
+            end
+        end
+    end
+    return newY
+end
+
+function applyOperator(M :: Matrix{ShiftOperator}, yVec :: Vector{SignalL2})
+    # Applies a matrix of operators to a vector of signals
+    n,m = size(M)
+    nVec, = size(yVec)
+    if nVec != m
+        error("Number of columns in M must be the same as the number of rows in yVec")
+    end
+    yNew = [];
+    for i = 1:n
+        yi = SignalL2(reshape([0],(1,1)),reshape([0],(1,1)),[0])
+        for j = 1:m
+            yi = yi + applyOperator(M[i,j], yVec[j])
+        end
+        yNew = [yNew; yi];
+    end
+    return yNew
 end

@@ -104,3 +104,17 @@ the specific structure required from the PAPER.
         z -id q'*r;
         z z -id]
     L = chol(M)         # L*L' = M'*M
+
+## Applying operators
+
+To apply the operator you need a signal of the class SignalL2, also provided
+in this repository. The signal class represents signals that can be represented
+by a tripple $(C,A,x_0)$ where the signal is
+        $y = (C x_0, C A x_0, C A^2 x_0, C A^3 x_0, ...)$.
+
+The following example shows how an operator can be applied to signal;
+
+    q = ShiftOperator("q")
+    op = q^2 + q'
+    y = SignalL2([1 0], [2 1; 0 1], [0;1])
+    yOut = applyOperator(op, y)  # Alterative syntax: op*y
