@@ -1,5 +1,6 @@
 # Shift operator algebra
-This is the code associated with the paper "Cholesky factorisation, and intrinsically sparse LQR".
+This is the code associated with the paper "Cholesky factorisation, and
+intrinsically sparse Linear Quadratic Regulation".
 It implements an algebra for shift operators that is used to derive
 factorised version of the Linear Quadratic Regulator (LQR).
 The code is available in two languages; MATLAB and Julia.
@@ -17,7 +18,7 @@ Each subdirectory contains the following (language specific) files
 - **ShiftOperator** is the class that defines the shift operator object
 - **ShiftOperatorTutorial** is a texted base tutorial that explaines how
     the shift operator class can be used.
-- **TimeVaryingNecessary** shows that a time varying factorisation is needed
+- **NoSparseSpectralFactor** shows that no sparsisty preserving spectral factorisation exists
     in accordance with Theorem 3.
 
 For installation and more language specific instructions, check the READMEs in the
