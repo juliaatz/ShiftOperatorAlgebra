@@ -900,6 +900,7 @@ classdef shiftOperator
             
             z = shiftOperator(0);
             
+            zOp = shiftOperator.empty;
             for i = 1:n
                 for j = 1:m
                     zOp(i,j) = z;
@@ -913,7 +914,7 @@ classdef shiftOperator
             
             one = shiftOperator(1);
             z = shiftOperator(0);
-            I = one;
+            I = shiftOperator.empty;
             for i = 1:n
                 for j = i:n
                     if (i == j)
